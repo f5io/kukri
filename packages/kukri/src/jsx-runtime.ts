@@ -4,7 +4,7 @@ import { Router, Ref, type Handler } from './router.js';
 import type { Child, ClassName, Context, Props, UnknownProps } from './types';
 
 declare global {
-	namespace JSX {
+  namespace JSX {
     type Node = AsyncGenerator<string | null, void, Context>;
     type PromiseLike<T> = Promise<T> | T;
     type ServerAction = (...args: any[]) => PromiseLike<Response | Node> | string; 
@@ -28,30 +28,30 @@ declare global {
         [key: string]: any
       }
 
-		interface IntrinsicAttributes {
-			class?: ClassName
-			className?: ClassName
+    interface IntrinsicAttributes {
+      class?: ClassName
+      className?: ClassName
       ['hx-get']?: ServerAction 
       ['hx-post']?: ServerAction 
       ['hx-put']?: ServerAction 
       ['hx-patch']?: ServerAction 
       ['hx-delete']?: ServerAction 
-			[key: string]: any
-		}
+      [key: string]: any
+    }
 
-		interface IntrinsicElements {
+    interface IntrinsicElements {
       form: IntrinsicAttributes & FormElementAttributes
       button: IntrinsicAttributes & ButtonElementAttributes
       input: IntrinsicAttributes & InputElementAttributes
-			[key: string]: IntrinsicAttributes
-		}
-	}
+      [key: string]: IntrinsicAttributes
+    }
+  }
 }
 
 const self_closing_tags = [
-	'area', 'base', 'br', 'col', 'embed',
-	'hr', 'img', 'input', 'link', 'meta',
-	'param', 'source', 'track', 'wbr',
+  'area', 'base', 'br', 'col', 'embed',
+  'hr', 'img', 'input', 'link', 'meta',
+  'param', 'source', 'track', 'wbr',
 ];
 
 export async function* iterate_children(children: Child[]): JSX.Node {
@@ -103,53 +103,53 @@ export async function* iterate_children(children: Child[]): JSX.Node {
 }
 
 function* iterate_class_names(cn: ClassName): Iterable<string> {
-	if (typeof cn === 'string') {
-		yield cn;
-	}
-	if (typeof cn === 'object') {
-		if (Array.isArray(cn)) {
-			for (const c of cn) {
-				if (typeof c !== 'boolean') {
-					yield ' ';
-					yield* iterate_class_names(c);
-				}
-			}
-		} else {
-			for (const k in cn) {
-				if (cn[k]) {
-					yield ` ${k}`;
-				}
-			}
-		}
-	}
+  if (typeof cn === 'string') {
+    yield cn;
+  }
+  if (typeof cn === 'object') {
+    if (Array.isArray(cn)) {
+      for (const c of cn) {
+        if (typeof c !== 'boolean') {
+          yield ' ';
+          yield* iterate_class_names(c);
+        }
+      }
+    } else {
+      for (const k in cn) {
+        if (cn[k]) {
+          yield ` ${k}`;
+        }
+      }
+    }
+  }
 }
 
 function* iterate_props(props: UnknownProps) {
-	for (const [key, value] of Object.entries(props)) {
-		if (typeof value === 'boolean' && value === true) {
-			yield ` ${key}`;
-			continue;
-		}
+  for (const [key, value] of Object.entries(props)) {
+    if (typeof value === 'boolean' && value === true) {
+      yield ` ${key}`;
+      continue;
+    }
 
-		let val = value;
-		if (key === 'class' || key === 'className') {
-			yield ` class="`;
-			yield* iterate_class_names(value as ClassName);
-			yield '"';
-		} else {
-			const delim = typeof val === 'string' && val.includes('"') ? "'" : '"';
-			yield ` ${key}=${delim}${val}${delim}`;
-		}
-	}
+    let val = value;
+    if (key === 'class' || key === 'className') {
+      yield ` class="`;
+      yield* iterate_class_names(value as ClassName);
+      yield '"';
+    } else {
+      const delim = typeof val === 'string' && val.includes('"') ? "'" : '"';
+      yield ` ${key}=${delim}${val}${delim}`;
+    }
+  }
 }
 
 function* handle_actions(
-	type: string,
-	config: Props,
+  type: string,
+  config: Props,
 ): Iterable<null> {
-	for (const method of methods) {
-		const hx = `hx-${method}`;
-		if (
+  for (const method of methods) {
+    const hx = `hx-${method}`;
+    if (
       typeof config[hx] === 'function'
       || config[hx] instanceof Ref
     ) {
@@ -157,7 +157,7 @@ function* handle_actions(
         .get_instance()
         .handle_action_render(config[hx] as Handler | Ref);
 
-			config[hx] = '/' + id;
+      config[hx] = '/' + id;
       if (vals != null) {
         let res = vals;
         if (config['hx-vals'] != null) {
@@ -165,19 +165,19 @@ function* handle_actions(
         }
         config['hx-vals'] = res;
       }
-		}
-	}
+    }
+  }
 
-	if (
-		type === 'form'
-		&& typeof config['action'] === 'function'
-		&& config['method'] !== 'dialog'
-	) {
+  if (
+    type === 'form'
+    && typeof config['action'] === 'function'
+    && config['method'] !== 'dialog'
+  ) {
     const { id, vals } = Router
       .get_instance()
       .handle_action_render(config['action'] as Handler | Ref);
 
-		config['action'] = '/' + id;
+    config['action'] = '/' + id;
 
     if (vals != null) {
       let res = vals;
@@ -186,23 +186,23 @@ function* handle_actions(
       }
       config['hx-vals'] = res;
     }
-	}
+  }
 
-	if (
-		(
-			type === 'button'
-			|| (
-				type === 'input'
-				&& (config['type'] === 'submit' || config['type'] === 'image')
-			)
-		)
-		&& typeof config['formaction'] === 'function'
-	) {
+  if (
+    (
+      type === 'button'
+      || (
+        type === 'input'
+        && (config['type'] === 'submit' || config['type'] === 'image')
+      )
+    )
+    && typeof config['formaction'] === 'function'
+  ) {
     const { id, vals } = Router
       .get_instance()
       .handle_action_render(config['formaction'] as Handler | Ref);
 
-		config['formaction'] = '/' + id;
+    config['formaction'] = '/' + id;
     if (vals != null) {
       let res = vals;
       if (config['hx-vals'] != null) {
@@ -210,39 +210,39 @@ function* handle_actions(
       }
       config['hx-vals'] = res;
     }
-	}
+  }
 }
 
 const methods = ['get', 'post', 'patch', 'put', 'delete'] as const;
 
 export function jsx(
-	type: string | Function,
-	config: Props,
+  type: string | Function,
+  config: Props,
 ): JSX.Node {
-	return async function*() {
-		if (typeof type === 'function') {
-			return yield* await type(config);
-		}
+  return async function*() {
+    if (typeof type === 'function') {
+      return yield* await type(config);
+    }
 
-		yield* handle_actions(type, config);
+    yield* handle_actions(type, config);
 
-		const { children = [], ...props } = config;
-		const child_props = Array().concat(children);
+    const { children = [], ...props } = config;
+    const child_props = Array().concat(children);
 
-		if (type === jsxFragment) {
-			yield* iterate_children(child_props);
-		} else {
-			yield `<${type}`;
-			yield* iterate_props(props);
-			if (self_closing_tags.includes(type)) {
-				yield '/>';
-			} else {
-				yield '>';
-				yield* iterate_children(child_props);
-				yield `</${type}>`;
-			}
-		}
-	}();
+    if (type === jsxFragment) {
+      yield* iterate_children(child_props);
+    } else {
+      yield `<${type}`;
+      yield* iterate_props(props);
+      if (self_closing_tags.includes(type)) {
+        yield '/>';
+      } else {
+        yield '>';
+        yield* iterate_children(child_props);
+        yield `</${type}>`;
+      }
+    }
+  }();
 }
 
 jsx.Fragment = jsxFragment

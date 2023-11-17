@@ -224,56 +224,56 @@ export class Router<Args extends any[] = any[]> {
 }
 
 export function iterator_to_stream(
-	iterator: JSX.Node,
-	context: Context,
-	prefix?: string
+  iterator: JSX.Node,
+  context: Context,
+  prefix?: string
 ) {
-	const encoder = new TextEncoder();
-	let started = prefix == null;
-	let run_suspense = true;
-	let it: JSX.Node | SuspenseItem = iterator;
-	return new ReadableStream({
-		async pull(controller) {
-			if (!started) {
-				controller.enqueue(encoder.encode(prefix));
-				started = true;
-			}
+  const encoder = new TextEncoder();
+  let started = prefix == null;
+  let run_suspense = true;
+  let it: JSX.Node | SuspenseItem = iterator;
+  return new ReadableStream({
+    async pull(controller) {
+      if (!started) {
+        controller.enqueue(encoder.encode(prefix));
+        started = true;
+      }
 
-			let done, value;
-			// todo: make this better
-			try {
-				({ value, done } = await it.next(context));
-			} catch(err) {
-				run_suspense = false;
-				it = jsx('div', {
-					'hx-error': true,
-					'hx-target': 'body',
-					children: 'internal server error',
-				});
-			}
+      let done, value;
+      // todo: make this better
+      try {
+        ({ value, done } = await it.next(context));
+      } catch(err) {
+        run_suspense = false;
+        it = jsx('div', {
+          'hx-error': true,
+          'hx-target': 'body',
+          children: 'internal server error',
+        });
+      }
 
-			if (done) {
-				const suspense = context.get(SUSPENSE_KEY) as SuspenseItems;
+      if (done) {
+        const suspense = context.get(SUSPENSE_KEY) as SuspenseItems;
 
-				if (run_suspense === false || suspense == null || suspense.items.length === 0) {
-					controller.close();
-				} else {
-					// issue a suspense boundary
-					controller.enqueue(encoder.encode(`<!--${boundary_text}-->`));
+        if (run_suspense === false || suspense == null || suspense.items.length === 0) {
+          controller.close();
+        } else {
+          // issue a suspense boundary
+          controller.enqueue(encoder.encode(`<!--${boundary_text}-->`));
 
-					const [ iterator, index ] = await Promise.race(
-						suspense.items.map((item, i) => item.then(it => [it, i] as const)),
-					);
+          const [ iterator, index ] = await Promise.race(
+            suspense.items.map((item, i) => item.then(it => [it, i] as const)),
+          );
 
-					suspense.items.splice(index, 1);
+          suspense.items.splice(index, 1);
 
-					it = iterator;
+          it = iterator;
 
-					context.set(SUSPENSE_KEY, suspense);
-				}
-			} else {
-				controller.enqueue(encoder.encode(value ?? ''));
-			}
-		},
-	});
+          context.set(SUSPENSE_KEY, suspense);
+        }
+      } else {
+        controller.enqueue(encoder.encode(value ?? ''));
+      }
+    },
+  });
 }

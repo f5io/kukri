@@ -6,11 +6,11 @@ export { Suspense } from './suspense.js';
 export { ErrorBoundary } from './error.js';
 
 export function createElement(
-	type: string | Function,
-	config: UnknownProps,
-	children?: Children
+  type: string | Function,
+  config: UnknownProps,
+  children?: Children
 ) {
-	return jsx(type, Object.assign(config, { children }));
+  return jsx(type, Object.assign(config, { children }));
 }
 
 export { Props };
