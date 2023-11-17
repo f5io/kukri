@@ -16,16 +16,16 @@ router.all('*', async (request) => {
 
 Bun.serve({
   port: 1337,
-	async fetch(...args) {
-		try {
+  async fetch(...args) {
+    try {
       const response = await router.handle(...args);
-			if (response == null) return new Response('not found', { status: 404 });
-			return response;
+      if (response == null) return new Response('not found', { status: 404 });
+      return response;
     } catch(err) {
       return new Response(
         err.message ?? 'internal server error',
         { status: 500 }
       );
     }
-	},
+  },
 });
