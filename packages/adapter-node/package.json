@@ -1,12 +1,12 @@
 {
   "name": "@kukri/adapter-node",
-  "version": "1.0.0",
+  "version": "0.0.1-alpha.1",
   "main": "./src/entrypoint.js",
   "type": "module",
   "license": "MIT",
   "dependencies": {
     "@whatwg-node/server": "^0.9.16",
-    "kukri": "*"
+    "kukri": "0.0.1-alpha.1"
   },
   "devDependencies": {
     "punycode": "^2.3.1"

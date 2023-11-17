@@ -9,7 +9,7 @@
     "preview": "kukri build && node ./dist/entrypoint.mjs"
   },
   "devDependencies": {
-    "@kukri/adapter-node": "*",
-    "kukri": "*"
+    "@kukri/adapter-node": "0.0.1-alpha.1",
+    "kukri": "0.0.1-alpha.1"
   }
 }

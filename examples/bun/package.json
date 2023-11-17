@@ -9,7 +9,7 @@
     "preview": "kukri build --target bun && bun ./dist/entrypoint.mjs"
   },
   "devDependencies": {
-    "@kukri/adapter-bun": "*",
-    "kukri": "*"
+    "@kukri/adapter-bun": "0.0.1-alpha.1",
+    "kukri": "0.0.1-alpha.1"
   }
 }
