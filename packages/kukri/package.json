@@ -1,0 +1,61 @@
+{
+  "name": "kukri",
+  "version": "0.1.0",
+  "description": "it's just html, but with suspense, server actions and more...",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.6"
+  },
+  "main": "./index.cjs",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "bin": {
+    "kukri": "./dist/bin/index.mjs"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/src/index.d.ts"
+    },
+    "./*": {
+      "import": "./dist/*.js",
+      "require": "./dist/*.cjs",
+      "types": "./dist/src/*.d.ts"
+    }
+  },
+  "files": [
+    "package.json",
+    "dist/*"
+  ],
+  "scripts": {
+    "build": "yarn run cleanup && yarn run output:lib && yarn run output:cjs && yarn run output:bin && yarn run output:types",
+    "cleanup": "rm -rf ./dist | true",
+    "output:lib": "esbuild --platform=node --format=esm --outdir=./dist ./src/*.ts",
+    "output:cjs": "esbuild --platform=node --format=cjs --outdir=./dist --out-extension:.js=.cjs ./src/*.ts",
+    "output:bin": "esbuild --platform=node --format=esm --bundle --outfile=./dist/bin/index.mjs --external:fast-glob --external:esbuild --external:recast --external:node-watch --external:.kukri/* --external:@whatwg-node/* --external:@node-rs/* --external:commander ./src/bin/index.ts",
+    "output:types": "tsc --emitDeclarationOnly",
+    "check": "tsc --noEmit",
+    "test": "echo 'no tests yet!'"
+  },
+  "devDependencies": {
+    "acorn": "^8.11.2",
+    "acorn-typescript": "^1.4.10",
+    "ast-types": "^0.14.2",
+    "dedent": "^1.5.1",
+    "devalue": "^4.3.2",
+    "import-meta-resolve": "^4.0.0",
+    "itty-router": "^4.0.23",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@node-rs/xxhash": "^1.4.2",
+    "commander": "^11.1.0",
+    "esbuild": "^0.19.5",
+    "fast-glob": "^3.3.1",
+    "hot-esm": "^1.6.0",
+    "node-watch": "^0.7.4",
+    "recast": "^0.23.4"
+  }
+}

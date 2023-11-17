@@ -1,0 +1,12 @@
+name = "kukri"
+compatibility_date = "2023-09-27"
+
+main = "dist/entrypoint.mjs"
+site = { bucket = "./static" }
+
+[build]
+command = "kukri build --target worker"
+
+[dev]
+ip = "0.0.0.0"
+port = 1337

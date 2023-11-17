@@ -1,0 +1,10 @@
+{
+  "name": "@kukri/adapter-bun",
+  "version": "1.0.0",
+  "main": "./src/entrypoint.js",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "kukri": "*"
+  }
+}

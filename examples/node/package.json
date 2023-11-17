@@ -1,0 +1,15 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "kukri build",
+    "start": "kukri dev",
+    "preview": "kukri build && node ./dist/entrypoint.mjs"
+  },
+  "devDependencies": {
+    "@kukri/adapter-node": "*",
+    "kukri": "*"
+  }
+}

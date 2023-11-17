@@ -1,0 +1,15 @@
+{
+  "name": "bun",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "kukri build --target bun",
+    "start": "kukri dev",
+    "preview": "kukri build --target bun && bun ./dist/entrypoint.mjs"
+  },
+  "devDependencies": {
+    "@kukri/adapter-bun": "*",
+    "kukri": "*"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@kukri/adapter-worker",
+  "version": "1.0.0",
+  "main": "./src/entrypoint.js",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "^0.3.0",
+    "kukri": "*"
+  }
+}
