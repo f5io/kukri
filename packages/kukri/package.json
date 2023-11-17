@@ -7,9 +7,9 @@
   "engines": {
     "node": ">=20.6"
   },
-  "main": "./index.cjs",
-  "module": "./index.js",
-  "types": "./index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/src/index.d.ts",
   "bin": {
     "kukri": "./dist/bin/index.mjs"
   },
