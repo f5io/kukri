@@ -170,7 +170,10 @@ function* handle_actions(
 
   if (
     type === 'form'
-    && typeof config['action'] === 'function'
+    && (
+      typeof config['action'] === 'function'
+      || config['action'] instanceof Ref
+    )
     && config['method'] !== 'dialog'
   ) {
     const { id, vals } = Router
@@ -196,7 +199,10 @@ function* handle_actions(
         && (config['type'] === 'submit' || config['type'] === 'image')
       )
     )
-    && typeof config['formaction'] === 'function'
+    && (
+      typeof config['formaction'] === 'function'
+      || config['formaction'] instanceof Ref
+    )
   ) {
     const { id, vals } = Router
       .get_instance()

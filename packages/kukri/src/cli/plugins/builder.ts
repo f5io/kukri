@@ -140,14 +140,12 @@ export function kukri_builder({
             console.log('adding', '__PATH__', 'at', '__FILE__');
             $instance.get_router().all('__PATH__', async (...args) => {
               const [ request ] = args;
-              const { default: route, config = {} } = await import('__FILE__');
-              if (request.method.toLowerCase() === (config.method ?? 'get')) {
-                const response = await route(...args);
-                if ('next' in response && typeof response.next === 'function') {
-                  return new Response(iterator_to_stream(response, new Map()));
-                } else {
-                  return response;
-                }
+              const { default: route } = await import('__FILE__');
+              const response = await route(...args);
+              if ('next' in response && typeof response.next === 'function') {
+                return new Response(iterator_to_stream(response, new Map()));
+              } else {
+                return response;
               }
             });
           `;
@@ -160,14 +158,12 @@ export function kukri_builder({
             console.log('adding', '__PATH__', 'at', '__FILE__');
             $instance.get_router().all('__PATH__', async (...args) => {
               const [ request ] = args;
-              const { default: route, config = {} } = await import('__FILE__');
-              if (request.method.toLowerCase() === (config.method ?? 'get')) {
-                const response = await route(...args);
-                if ('next' in response && typeof response.next === 'function') {
-                  return new Response(iterator_to_stream(response, new Map()));
-                } else {
-                  return response;
-                }
+              const { default: route } = await import('__FILE__');
+              const response = await route(...args);
+              if ('next' in response && typeof response.next === 'function') {
+                return new Response(iterator_to_stream(response, new Map()));
+              } else {
+                return response;
               }
             });
           `;
